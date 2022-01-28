@@ -42,6 +42,6 @@ def angled_vent_grid(width, height, thickness, border_width, vent_height, slat_h
 	pass
 
 if __name__ == "__main__":
-	draw = side_vent(100, 50, 5, 5, 3, 2)
-	draw = vent_grid(100, 50, 5, 5, 3, 2,20)
+	# draw = side_vent(100, 50, 5, 5, 3, 2)
+	draw = vent_grid(60, 50, 5, 5, 3, 2,20)
 	scad_render_to_file(draw, file_header='$fa = 0.1;\n$fs = 0.1;\n$fn = 0;', filepath='solidpython.scad')
