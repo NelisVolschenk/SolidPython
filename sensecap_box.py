@@ -1,9 +1,11 @@
 from vent import *
 
 box_width = 60
-box_height = 2#148
+box_height = 148
 box_length = 174
 box_shell_thickness = 5
+
+bolt_size = 4
 
 bracket_thickness = box_shell_thickness-3
 sensecap_width = 40
@@ -26,14 +28,15 @@ airial_cone_diameter = min(airial_diameter * 3, box_width)
 airial_cone_height = airial_cone_diameter/2
 
 mounting_bracket_plate_thickness = 5
-mounting_bracket_plate_extra = 5
+mounting_bracket_plate_extra = 10
 mounting_bracket_pole_diameter = 50
-mounting_bracket_thickness = 10
-mounting_bracket_length = mounting_bracket_pole_diameter/2 + 2*mounting_bracket_thickness + mounting_bracket_plate_thickness
-mounting_bracket_width = mounting_bracket_pole_diameter + 2*mounting_bracket_thickness
-mounting_bracket_height = 3*mounting_bracket_thickness
-mounting_bracket_plate_height = mounting_bracket_width + 2*mounting_bracket_plate_extra
+mounting_bracket_section_thickness = 10
+mounting_bracket_length = mounting_bracket_pole_diameter / 2 + 2 * mounting_bracket_section_thickness + mounting_bracket_plate_thickness
+mounting_bracket_width = mounting_bracket_pole_diameter + 2 * mounting_bracket_section_thickness
+mounting_bracket_height = 3 * mounting_bracket_section_thickness
+mounting_bracket_plate_height = mounting_bracket_height + 2*mounting_bracket_plate_extra
 mounting_bracket_plate_width = mounting_bracket_width + 2*mounting_bracket_plate_extra
+mounting_bracket_support_width = 20
 
 #Create the box
 box = cube((box_length,box_width,box_height), center=True)
@@ -88,12 +91,33 @@ airial_cone = outer_cone - inner_cone - small_airial_hole
 airial_cone = translate((airial_offset_x, airial_offset_y, box_height / 2))(airial_cone)
 
 #Create the mounting bracket
+mounting_bracket = cube((mounting_bracket_width, mounting_bracket_length, mounting_bracket_height), center=True)
+pipe_hole = translate((0,-mounting_bracket_length/2,-mounting_bracket_height/2))(cylinder(d=mounting_bracket_pole_diameter,h=mounting_bracket_height))
+middle_cube = cube((mounting_bracket_width, mounting_bracket_length-mounting_bracket_plate_thickness, mounting_bracket_section_thickness), center=True)
+middle_cube = translate((0,-mounting_bracket_plate_thickness/2,0))(middle_cube)
+middle_hole = cube((mounting_bracket_pole_diameter, mounting_bracket_pole_diameter/2, mounting_bracket_section_thickness), center=True)
+middle_hole = translate((0,-mounting_bracket_pole_diameter/4,0))(middle_hole)
+middle_hole += translate((0,0,-mounting_bracket_section_thickness/2))(cylinder(d=mounting_bracket_pole_diameter,h=mounting_bracket_section_thickness))
+middle_hole = translate((0,-mounting_bracket_length/2 + mounting_bracket_section_thickness,0))(middle_hole)
+mounting_plate = cube((mounting_bracket_plate_width, mounting_bracket_plate_thickness, mounting_bracket_plate_height), center=True)
+# Add the mounting plate to the box
+box_with_vents += translate((0,-(box_width-mounting_bracket_plate_thickness)/2,0))(mounting_plate)
+# Add supports for the mounting plate
+supp1 = cube((mounting_bracket_support_width, box_shell_thickness, box_height), center=True)
+supp2 = cube((box_length, box_shell_thickness, mounting_bracket_support_width), center=True)
+supps = supp1 +supp2
+supps = translate((0,-(box_width-box_shell_thickness)/2,0))(supps)
+box_with_vents += supps
+bracket_hole = down((box_shell_thickness+mounting_bracket_plate_thickness)/2)(cylinder(d=bolt_size,h=box_shell_thickness+mounting_bracket_plate_thickness))
+bracket_hole = rotate(a=(90,0,0))(bracket_hole)
+bracket_hole = translate((0,-box_width/2,0))(bracket_hole)
+bracket_hole1 = translate(())(bracket_hole)
 
+mounting_plate = translate((0,(mounting_bracket_length - mounting_bracket_plate_thickness)/2,0))(mounting_plate)
+mounting_bracket = mounting_bracket - pipe_hole - (middle_cube-middle_hole) + mounting_plate
+mounting_bracket = translate((0,-mounting_bracket_length/2,0))(mounting_bracket)
 
-
-
-
-test = box_with_vents + bracket_1 + bracket_2# + bottom_bracket1 + bottom_bracket2
+test =  bracket_hole
 #fa = .1 very good quality
 #fa = 0.8 draft quality
 scad_render_to_file(box_with_vents, file_header='$fa = 2;\n$fs = 0.1;\n$fn = 0;', filepath='renders/sensecap_box.scad')
