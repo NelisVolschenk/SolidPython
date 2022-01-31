@@ -6,7 +6,7 @@ def side_vent(width, height, thickness, border_width, vent_height, slat_height):
 	hole_height = height-2*border_width
 	num_vents = (hole_height - thickness) // (vent_height + slat_height)
 	hole_height = num_vents * (vent_height + slat_height) - slat_height / 2
-	print(f'There will be {num_vents} vents')
+	print(f'There will be {num_vents} vents per column')
 
 	outer_shield = cube((width, thickness, height), center=True)
 
@@ -37,9 +37,17 @@ def vent_grid(width, height, thickness, border_width, vent_height, slat_height, 
 		grid += translate((-i*(vent_length+slat_height),0,0))(column)
 	return grid
 
-def angled_vent_grid(width, height, thickness, border_width, vent_height, slat_height):
-	
-	pass
+def horizontal_vent(length, width, thickness, border_width, vent_size, slat_size):
+	vent_width = width - 2*border_width
+	num_vents = (length - 2*border_width)//(vent_size + slat_size)
+	vent_area_length = num_vents * (vent_size + slat_size)
+	plate = cube((length, width, thickness), center=True)
+	vent = cube((vent_size, vent_width, thickness), center=True)
+	vent = translate((-vent_area_length/2 + vent_size/2,0,0,))(vent)
+	construct = plate
+	for i in range(num_vents):
+		construct -= translate((i*(vent_size + slat_size),0,0))(vent)
+	return construct
 
 if __name__ == "__main__":
 	# draw = side_vent(100, 50, 5, 5, 3, 2)

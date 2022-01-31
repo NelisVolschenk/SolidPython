@@ -4,13 +4,72 @@ $fs = 0.1;
 $fn = 0;
 
 
-translate(v = [50, 3, 74.0000000000]) {
-	difference() {
-		cylinder(d1 = 39, d2 = 0, h = 19.5000000000);
-		translate(v = [0, 0, -5]) {
-			cylinder(d1 = 39, d2 = 0, h = 19.5000000000);
+difference() {
+	translate(v = [0, -55.0000000000, 0]) {
+		union() {
+			difference() {
+				cube(center = true, size = [70, 50.0000000000, 30]);
+				translate(v = [0, -25.0000000000, -15.0000000000]) {
+					cylinder(d = 50, h = 30);
+				}
+				difference() {
+					translate(v = [0, -2.5000000000, 0]) {
+						cube(center = true, size = [70, 45.0000000000, 10]);
+					}
+					translate(v = [0, -15.0000000000, 0]) {
+						union() {
+							translate(v = [0, -12.5000000000, 0]) {
+								cube(center = true, size = [50, 25.0000000000, 10]);
+							}
+							translate(v = [0, 0, -5.0000000000]) {
+								cylinder(d = 50, h = 10);
+							}
+						}
+					}
+				}
+			}
+			translate(v = [0, 22.5000000000, 0]) {
+				cube(center = true, size = [100, 5, 60]);
+			}
 		}
-		cylinder(d = 13, h = 29.5000000000);
+	}
+	union() {
+		translate(v = [45.0000000000, 0, 25.0000000000]) {
+			translate(v = [0, -30.0000000000, 0]) {
+				rotate(a = [90, 0, 0]) {
+					translate(v = [0, 0, -5.0000000000]) {
+						cylinder(d = 4, h = 10);
+					}
+				}
+			}
+		}
+		translate(v = [-45.0000000000, 0, 25.0000000000]) {
+			translate(v = [0, -30.0000000000, 0]) {
+				rotate(a = [90, 0, 0]) {
+					translate(v = [0, 0, -5.0000000000]) {
+						cylinder(d = 4, h = 10);
+					}
+				}
+			}
+		}
+		translate(v = [-45.0000000000, 0, -25.0000000000]) {
+			translate(v = [0, -30.0000000000, 0]) {
+				rotate(a = [90, 0, 0]) {
+					translate(v = [0, 0, -5.0000000000]) {
+						cylinder(d = 4, h = 10);
+					}
+				}
+			}
+		}
+		translate(v = [45.0000000000, 0, -25.0000000000]) {
+			translate(v = [0, -30.0000000000, 0]) {
+				rotate(a = [90, 0, 0]) {
+					translate(v = [0, 0, -5.0000000000]) {
+						cylinder(d = 4, h = 10);
+					}
+				}
+			}
+		}
 	}
 }
 /***********************************************
